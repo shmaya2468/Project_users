@@ -1,7 +1,8 @@
 package com.example.user_project.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 
 
 public class Users {
@@ -11,15 +12,19 @@ public class Users {
     private String firstName;
     @JsonProperty("last_name")
     private String lastName;
+    @Min(1)
+    private int age;
+    @NotEmpty
     private String email;
-    private String address ;
+    private String address;
     @JsonProperty("joining_date")
     private String joiningDate;
 
-    public Users(int userId, String firstName, String lastName, String email, String address, String joiningDate) {
+    public Users(int userId, String firstName, String lastName, int age, String email, String address, String joiningDate) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.age = age;
         this.email = email;
         this.address = address;
         this.joiningDate = joiningDate;
@@ -76,15 +81,24 @@ public class Users {
         this.joiningDate = joiningDate;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     @Override
     public String toString() {
-        return "UserDetails{" +
+        return "Users{" +
                 "userId=" + userId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", age=" + age +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
-                ", joiningDate=" + joiningDate +
+                ", joiningDate='" + joiningDate + '\'' +
                 '}';
     }
 }

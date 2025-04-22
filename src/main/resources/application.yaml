@@ -16,5 +16,9 @@ spring:
     console:
       enabled: true
 
+externalApi:
+  answers:
+    name: "answers-api"
+    url: "http://localhost:8082"
 
 

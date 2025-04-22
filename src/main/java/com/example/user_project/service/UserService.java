@@ -1,5 +1,6 @@
 package com.example.user_project.service;
 
+import com.example.user_project.answersAPI.AnswersAPIClient;
 import com.example.user_project.model.Users;
 import com.example.user_project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+
+    @Autowired
+    private AnswersAPIClient answersAPIClient;
+
     public Users save(Users user) {
         return userRepository.save(user);
     }
@@ -21,8 +26,19 @@ public class UserService {
         return userRepository.update(user);
     }
 
-    public String deleteById(int id) {
-        return userRepository.deleteById(id);
+
+    public String deleteUserWithHisAnswersByUserId(int userId) {
+        try {
+            if (userRepository.getById(userId) != null) {
+                answersAPIClient.deleteUserWithHisAnswersByUserId(userId);
+                userRepository.deleteUser(userId);
+                return "The user has been deleted Successfully";
+            } else {
+                return "User not found";
+            }
+        } catch (Exception e) {
+            return "Error while deleting: " + e.getMessage();
+        }
     }
 
     public List<Users> getAll() {
@@ -33,3 +49,5 @@ public class UserService {
         return userRepository.getById(id);
     }
 }
+
+

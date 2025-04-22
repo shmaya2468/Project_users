@@ -17,8 +17,8 @@ public class UserRepository {
 
     public Users save(Users user) {
         try {
-            String sql = "INSERT INTO users (first_name , last_name , email , address  , joining_date) VALUES(? ,? , ? ,? ,? )";
-            jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(), user.getEmail() , user.getAddress() , user.getJoiningDate());
+            String sql = "INSERT INTO users(first_name , last_name , age , email , address  , joining_date) VALUES (? ,? , ? ,? ,? , ? )";
+            jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(),user.getAge()  ,user.getEmail() , user.getAddress() , user.getJoiningDate());
             return getByEmailHelper(user.getEmail());
         } catch (Exception e) {
             System.out.println("Error saving user: " + e.getMessage());
@@ -27,10 +27,12 @@ public class UserRepository {
     }
 
 
+
+
     public Users update(Users user) {
         try {
-            String sql = "UPDATE users SET first_name = ? , last_name = ? , email = ? , address = ? , joining_date = ?  WHERE id = ?";
-            jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(), user.getEmail(), user.getAddress(),user.getJoiningDate() , user.getUserId());
+            String sql = "UPDATE users SET first_name = ? , last_name = ? , age = ? , email = ? , address = ? , joining_date = ?  WHERE id = ?";
+            jdbcTemplate.update(sql, user.getFirstName(), user.getLastName(), user.getAge() , user.getEmail(), user.getAddress(),user.getJoiningDate() , user.getUserId());
             return getById(user.getUserId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -38,13 +40,14 @@ public class UserRepository {
         }
     }
 
-    public String deleteById(int id) {
+    public String deleteUser(int id){
         try {
             String sql = "DELETE FROM users WHERE id = ?";
             jdbcTemplate.update(sql, id);
-            return "The user with ID: " + id + " deleted successfully";
-        } catch (Exception e) {
-            return e.getMessage();
+            return "The user has been deleted Successfully , with his answers";
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 

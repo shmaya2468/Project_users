@@ -2,6 +2,7 @@ package com.example.user_project.controller;
 
 import com.example.user_project.model.Users;
 import com.example.user_project.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,14 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<Users> createUser(@RequestBody Users user) {
+    public ResponseEntity<Users> createUser(@Valid  @RequestBody Users user) {
         try {
             Users savedUser = userService.save(user);
             if (savedUser != null) {
                 return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
             }
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            System.out.println("This user already exists in the system.");
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -42,18 +44,21 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable int id) {
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteUserWithHisAnswersByUserId(@PathVariable int userId) {
         try {
-            String result = userService.deleteById(id);
+            String result = userService.deleteUserWithHisAnswersByUserId(userId);
             if (result.contains("successfully")) {
                 return new ResponseEntity<>(result, HttpStatus.OK);
             }
             return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Users> getUser(@PathVariable int id) {
@@ -68,6 +73,7 @@ public class UserController {
         }
 
     }
+
 
     @GetMapping
     public ResponseEntity<List<Users>> getAllUsers() {
