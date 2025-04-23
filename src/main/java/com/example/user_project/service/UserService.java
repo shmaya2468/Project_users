@@ -32,7 +32,7 @@ public class UserService {
             if (userRepository.getById(userId) != null) {
                 answersAPIClient.deleteUserWithHisAnswersByUserId(userId);
                 userRepository.deleteUser(userId);
-                return "The user has been deleted Successfully";
+                return "The user has been deleted successfully";
             } else {
                 return "User not found";
             }
